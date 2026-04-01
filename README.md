@@ -1,36 +1,156 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🧠 Todo App Frontend
 
-## Getting Started
+Frontend de uma aplicação de gerenciamento de tarefas (Todo App), desenvolvido com foco em **boas práticas de arquitetura**, **experiência do usuário (UX)** e **código limpo**.
 
-First, run the development server:
+O projeto simula um ambiente próximo ao de aplicações reais, com autenticação, validação, controle de estado e operações completas de CRUD.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## 🚀 Tecnologias utilizadas
+
+- **React / Next.js**
+- **TypeScript**
+- **CSS Modules**
+- **Fetch API**
+- **Zod** (validação de dados)
+
+---
+
+## 🔐 Autenticação
+
+- Sistema de login funcional
+- Autenticação baseada em token (JWT)
+- Proteção de rotas (acesso restrito à dashboard)
+- Persistência de sessão com `credentials: "include"`
+
+---
+
+## ✅ Funcionalidades implementadas
+
+### 📋 CRUD de tarefas
+
+- Criar tarefa
+- Listar tarefas do usuário autenticado
+- Editar tarefa
+- Deletar tarefa
+
+Tudo funcionando com integração completa ao backend.
+
+---
+
+### 🧾 Formulários
+
+- Formulários para criação e edição via **modais**
+- Reaproveitamento de estrutura entre create/edit
+- Inputs controlados
+- Validação com **Zod**
+
+---
+
+### 🧠 Validação
+
+- Validação no frontend usando schemas
+- Feedback visual baseado no estado dos inputs
+- Integração com regras já existentes no backend
+
+---
+
+### 🔄 Estado de carregamento (Loading State)
+
+- Controle de carregamento centralizado no componente principal (`TaskPanel`)
+- Separação clara entre:
+  - Loading
+  - Empty State
+  - Data Loaded
+
+---
+
+### 🌌 Empty State
+
+- Exibição condicional quando não há tarefas
+- Não aparece durante carregamento (evita flicker)
+- Abordagem visual minimalista
+
+---
+
+## 🧱 Estrutura do projeto (visão geral)
+
+```
+components/
+ ├── TaskPanel        # Controle de estado e renderização
+ ├── TaskList         # Renderização da lista
+ ├── EmptyState       # Estado vazio
+ ├── TasksSkeleton    # Loading visual
+ ├── Modals           # Create/Edit
+services/
+ ├── task-service     # Requisições HTTP
+schemas/
+ ├── validation       # Schemas Zod
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🎯 Padrões adotados
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Separação de responsabilidades
+- Componentes desacoplados
+- Lógica centralizada em componentes "pai"
+- UI components focados apenas em renderização
+- Reutilização de código sempre que possível
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🚧 Próximas melhorias
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 🎨 UX e Interface
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Refinamento visual da interface
+- Melhor uso de cores e hierarquia visual
+- Transições mais suaves
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### ⏳ Loaders e feedback visual
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Skeleton loading para lista de tarefas
+- Feedback visual em ações (create/edit/delete)
+- Animações para transições de estado
+- Remoção de feedback textual (UI mais limpa)
+
+---
+
+### 🔍 Filtros e organização
+
+- Filtro por status (pendente, concluído, etc.)
+- Busca por texto
+- Ordenação de tarefas
+
+---
+
+## 💡 Objetivo do projeto
+
+Este projeto foi desenvolvido com foco em:
+
+- Simular um fluxo real de aplicação fullstack
+- Aplicar boas práticas modernas de frontend
+- Construir uma base sólida para evolução futura
+- Servir como projeto de portfólio
+
+---
+
+## 📌 Status
+
+🟢 **Em desenvolvimento ativo**
+
+- Core funcional completo ✅
+- Melhorias de UX em andamento 🚧
+
+---
+
+## 🧠 Observações finais
+
+O projeto prioriza **clareza de código, escalabilidade e experiência do usuário**, evitando soluções improvisadas e buscando um padrão próximo ao utilizado em aplicações profissionais.
+
+---
+
+Feito com dedicação e evolução contínua 🚀

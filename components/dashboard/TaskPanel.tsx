@@ -1,0 +1,154 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
+// Interfaces
+import { Task } from "@/interfaces/task";
+import { CreateTaskDTO } from "@/interfaces/create-task";
+import { EditTaskDto } from "@/interfaces/edit-task";
+
+// components
+import TaskToolbar from "./TaskToolbar";
+import TaskList from "./TaskList";
+
+// Services
+import {
+  getTasks,
+  createTask,
+  editTask,
+  deleteTask,
+} from "@/services/task-service";
+
+// styles
+import styles from "./TaskPanel.module.css";
+import CreateTaskModal from "./CreateTaskModal";
+import DeleteTaskModal from "./DeleteTaskModal";
+import EditTaskModal from "./EditTaskModal";
+
+export default function TaskPanel() {
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
+  const [editingTask, setEditingTask] = useState<Task | null>(null);
+  const [deletingTask, setDeletingTask] = useState<Task | null>(null);
+
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  function handleOpenCreateModal() {
+    setIsCreateModalOpen(true);
+  }
+
+  function handleCloseCreateModal() {
+    setIsCreateModalOpen(false);
+  }
+
+  function handleOpenEditModal(task: Task) {
+    setEditingTask(task);
+  }
+
+  function handleCloseEditModal() {
+    setEditingTask(null);
+  }
+
+  function handleOpenDeleteModal(task: Task) {
+    setDeletingTask(task);
+  }
+
+  function handleCloseDeleteModal() {
+    setDeletingTask(null);
+  }
+
+  async function handleCreateTask(task: CreateTaskDTO) {
+    setIsLoading(true);
+    try {
+      const newTask = await createTask(task);
+
+      setTasks((prev) => [...prev, newTask]);
+
+      handleCloseCreateModal();
+    } catch (error) {
+      console.log("Erro ao criar tarefa", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  async function handleEditTask(task: EditTaskDto) {
+    setIsLoading(true);
+    try {
+      const edited = await editTask(task);
+
+      setTasks((prev) => prev.map((t) => (t.id === edited.id ? edited : t)));
+
+      handleCloseEditModal();
+    } catch (error) {
+      console.log("Erro ao editar tarefa", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  async function handleDeleteTask(task: Task) {
+    setIsLoading(true);
+    try {
+      await deleteTask(task.id);
+
+      setTasks((prev) => prev.filter((t) => t.id !== task.id));
+
+      handleCloseDeleteModal();
+    } catch (error) {
+      console.log("Erro ao deletar tarefa.");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    async function loadTasks() {
+      setIsLoading(true);
+      try {
+        const data = await getTasks();
+        setTasks(data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    loadTasks();
+  }, []);
+
+  return (
+    <section>
+      <TaskToolbar onOpenModal={handleOpenCreateModal} />
+      <TaskList
+        tasks={tasks}
+        onDeleteTask={handleOpenDeleteModal}
+        onEditTask={handleOpenEditModal}
+      />
+
+      {isCreateModalOpen && (
+        <CreateTaskModal
+          onClose={handleCloseCreateModal}
+          onCreateTask={handleCreateTask}
+        />
+      )}
+
+      {deletingTask && (
+        <DeleteTaskModal
+          task={deletingTask}
+          onClose={handleCloseDeleteModal}
+          onConfirm={handleDeleteTask}
+        />
+      )}
+
+      {editingTask && (
+        <EditTaskModal
+          task={editingTask}
+          onClose={handleCloseEditModal}
+          onEditTask={handleEditTask}
+        />
+      )}
+    </section>
+  );
+}
