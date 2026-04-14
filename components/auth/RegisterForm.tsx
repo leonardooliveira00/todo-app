@@ -14,11 +14,6 @@ import { registerSchema } from "@/libs/validations/register";
 // components
 import Input from "../ui/Input";
 
-//styles
-import baseForm from "./styles/AuthForm.module.css";
-import baseButton from "./styles/Button.module.css";
-import styles from "./styles/RegisterForm.module.css";
-
 // icons
 import { User, Mail, Lock } from "lucide-react";
 
@@ -72,13 +67,13 @@ export default function RegisterForm() {
   }
 
   return (
-    <form className={baseForm.form} onSubmit={handleSubmit}>
-      <div className={styles.formTitle}>
-        <h1 className={styles.h1}>Registre-se</h1>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-8" noValidate>
+      <div>
+        <h1>Registre-se</h1>
       </div>
 
       <Input
-        icon={<User className={styles.icon} />}
+        icon={<User />}
         type="text"
         id="name"
         value={name}
@@ -87,7 +82,7 @@ export default function RegisterForm() {
       />
 
       <Input
-        icon={<Mail className={styles.icon} />}
+        icon={<Mail />}
         type="email"
         id="email"
         value={email}
@@ -96,7 +91,7 @@ export default function RegisterForm() {
       />
 
       <Input
-        icon={<Lock className={styles.icon} />}
+        icon={<Lock />}
         type="password"
         id="password"
         value={password}
@@ -104,12 +99,7 @@ export default function RegisterForm() {
         label="Senha"
       />
 
-      <button
-        className={`${baseButton.button} ${styles.registerButton}`}
-        disabled={isLoading}
-      >
-        Registrar
-      </button>
+      <button disabled={isLoading}>Registrar</button>
     </form>
   );
 }

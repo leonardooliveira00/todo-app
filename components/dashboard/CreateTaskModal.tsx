@@ -6,6 +6,7 @@ import { CreateTaskModalProps } from "@/interfaces/create-task-modal-props";
 export default function CreateTaskModal({
   onClose,
   onCreateTask,
+  isSubmitting,
 }: CreateTaskModalProps) {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -27,7 +28,7 @@ export default function CreateTaskModal({
   }
 
   return (
-    <Modal onClose={onClose} isLoading>
+    <Modal onClose={onClose}>
       <h2>Criar tarefa</h2>
 
       <form onSubmit={handleSubmit}>
@@ -60,7 +61,9 @@ export default function CreateTaskModal({
           Concluída
         </div>
 
-        <button type="submit">Criar</button>
+        <button type="submit" disabled={isSubmitting}>
+          Criar
+        </button>
       </form>
     </Modal>
   );

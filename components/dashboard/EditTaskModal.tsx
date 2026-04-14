@@ -7,6 +7,7 @@ export default function EditTaskModal({
   task,
   onClose,
   onEditTask,
+  isSubmitting,
 }: EditTaskModalProps) {
   const [title, setTitle] = useState<string>(task.title);
   const [description, setDescription] = useState<string>(
@@ -30,7 +31,7 @@ export default function EditTaskModal({
   }
 
   return (
-    <Modal onClose={onClose} isLoading>
+    <Modal onClose={onClose}>
       <h2>Editar tarefa</h2>
 
       <form onSubmit={handleSubmit}>
@@ -63,7 +64,9 @@ export default function EditTaskModal({
           Concluída
         </div>
 
-        <button type="submit">Editar</button>
+        <button type="submit" disabled={isSubmitting}>
+          Editar
+        </button>
       </form>
     </Modal>
   );

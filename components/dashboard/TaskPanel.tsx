@@ -33,6 +33,8 @@ export default function TaskPanel() {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isFetchingTasks, setIsFetchingTasks] = useState<boolean>(false);
+  const [isSubmittingTask, setIsSubmittingTask] = useState<boolean>(false);
 
   function handleOpenCreateModal() {
     setIsCreateModalOpen(true);
@@ -59,7 +61,7 @@ export default function TaskPanel() {
   }
 
   async function handleCreateTask(task: CreateTaskDTO) {
-    setIsLoading(true);
+    setIsSubmittingTask(true);
     try {
       const newTask = await createTask(task);
 
@@ -69,12 +71,12 @@ export default function TaskPanel() {
     } catch (error) {
       console.log("Erro ao criar tarefa", error);
     } finally {
-      setIsLoading(false);
+      setIsSubmittingTask(false);
     }
   }
 
   async function handleEditTask(task: EditTaskDto) {
-    setIsLoading(true);
+    setIsSubmittingTask(true);
     try {
       const edited = await editTask(task);
 
@@ -84,12 +86,12 @@ export default function TaskPanel() {
     } catch (error) {
       console.log("Erro ao editar tarefa", error);
     } finally {
-      setIsLoading(false);
+      setIsSubmittingTask(false);
     }
   }
 
   async function handleDeleteTask(task: Task) {
-    setIsLoading(true);
+    setIsSubmittingTask(true);
     try {
       await deleteTask(task.id);
 
@@ -99,20 +101,20 @@ export default function TaskPanel() {
     } catch (error) {
       console.log("Erro ao deletar tarefa.");
     } finally {
-      setIsLoading(false);
+      setIsSubmittingTask(false);
     }
   }
 
   useEffect(() => {
     async function loadTasks() {
-      setIsLoading(true);
+      setIsFetchingTasks(true);
       try {
         const data = await getTasks();
         setTasks(data);
       } catch (error) {
         console.log(error);
       } finally {
-        setIsLoading(false);
+        setIsFetchingTasks(false);
       }
     }
     loadTasks();
@@ -131,6 +133,7 @@ export default function TaskPanel() {
         <CreateTaskModal
           onClose={handleCloseCreateModal}
           onCreateTask={handleCreateTask}
+          isSubmitting={isSubmittingTask}
         />
       )}
 
@@ -139,6 +142,7 @@ export default function TaskPanel() {
           task={deletingTask}
           onClose={handleCloseDeleteModal}
           onConfirm={handleDeleteTask}
+          isSubmitting={isSubmittingTask}
         />
       )}
 
@@ -147,6 +151,7 @@ export default function TaskPanel() {
           task={editingTask}
           onClose={handleCloseEditModal}
           onEditTask={handleEditTask}
+          isSubmitting={isSubmittingTask}
         />
       )}
     </section>

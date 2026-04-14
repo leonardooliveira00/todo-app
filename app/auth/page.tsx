@@ -1,18 +1,15 @@
 import LoginForm from "@/components/auth/LoginForm";
 import RegisterForm from "@/components/auth/RegisterForm";
 
-//styles
-import styles from "./auth.module.css";
-
 export default function AuthPage() {
   return (
-    <main className={styles.container}>
-      <div className={styles.card}>
-        <div className={styles.left}>
+    <main>
+      <div className="flex min-h-screen flex-1 items-center justify-center gap-16 p-4 bg-blue-200">
+        <div className="max-w-md w-full p-6 rounded-lg shadow-md bg-indigo-300">
           <LoginForm />
         </div>
 
-        <div className={styles.right}>
+        <div className="max-w-md w-full p-6 rounded-lg shadow-md bg-amber-200">
           <RegisterForm />
         </div>
       </div>

@@ -4,4 +4,5 @@ export interface DeleteTaskModalProps {
   task: Task;
   onClose: () => void;
   onConfirm: (task: Task) => Promise<void>;
+  isSubmitting: boolean;
 }

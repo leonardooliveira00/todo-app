@@ -5,4 +5,5 @@ export interface EditTaskModalProps {
   task: Task;
   onClose: () => void;
   onEditTask: (task: EditTaskDto) => Promise<void>;
+  isSubmitting: boolean;
 }

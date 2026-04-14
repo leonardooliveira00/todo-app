@@ -6,9 +6,10 @@ export default function DeleteTaskModal({
   task,
   onClose,
   onConfirm,
+  isSubmitting,
 }: DeleteTaskModalProps) {
   return (
-    <Modal onClose={onClose} isLoading>
+    <Modal onClose={onClose}>
       <h2>Confirmar exclusão</h2>
 
       <p>
@@ -19,7 +20,9 @@ export default function DeleteTaskModal({
         <button onClick={onClose}>Cancelar</button>
       </div>
 
-      <button onClick={() => onConfirm(task)}>Excluir</button>
+      <button onClick={() => onConfirm(task)} disabled={isSubmitting}>
+        Excluir
+      </button>
     </Modal>
   );
 }

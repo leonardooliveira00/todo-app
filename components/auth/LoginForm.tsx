@@ -16,12 +16,6 @@ import { loginSchema } from "@/libs/validations/auth";
 // icons
 import { Mail, Lock } from "lucide-react";
 
-//styles
-import baseForm from "./styles/AuthForm.module.css";
-import baseButton from "./styles/Button.module.css";
-import styles from "./styles/LoginForm.module.css";
-import { span } from "framer-motion/client";
-
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -72,46 +66,45 @@ export default function LoginForm() {
   }
 
   return (
-    <form className={baseForm.form} onSubmit={handleSubmit} noValidate>
-      <div className={styles.formTitle}>
-        <h1 className={styles.h1}>Acesse sua conta</h1>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-8" noValidate>
+      <div>
+        <h1>Acesse sua conta</h1>
       </div>
 
-      <Input
-        icon={<Mail className={styles.icon} />}
-        type="email"
-        id="email"
-        value={email}
-        onChange={(e) => {
-          setEmail(e.target.value);
-          if (fieldErrors.email) {
-            setFieldErrors((prev) => {
-              const newErrors = { ...prev };
-              delete newErrors.email;
-              return newErrors;
-            });
-          }
-        }}
-        label="Email"
-      />
-      {fieldErrors.email && <span>{fieldErrors.email[0]}</span>}
+      <div className="flex flex-col gap-1">
+        <Input
+          icon={<Mail />}
+          type="email"
+          id="email"
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            if (fieldErrors.email) {
+              setFieldErrors((prev) => {
+                const newErrors = { ...prev };
+                delete newErrors.email;
+                return newErrors;
+              });
+            }
+          }}
+          label="Email"
+        />
+        {fieldErrors.email && <span>{fieldErrors.email[0]}</span>}
+      </div>
 
-      <Input
-        icon={<Lock className={styles.icon} />}
-        type="password"
-        id="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        label="Senha"
-      />
-      {fieldErrors.password && <span>{fieldErrors.password}</span>}
+      <div className="flex flex-col gap-1">
+        <Input
+          icon={<Lock />}
+          type="password"
+          id="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          label="Senha"
+        />
+        {fieldErrors.password && <span>{fieldErrors.password}</span>}
+      </div>
 
-      <button
-        className={`${baseButton.button} ${styles.loginButton}`}
-        disabled={isLoading}
-      >
-        Entrar
-      </button>
+      <button disabled={isLoading}>Entrar</button>
     </form>
   );
 }
