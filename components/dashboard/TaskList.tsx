@@ -1,44 +1,49 @@
-import { Pencil, Trash } from "lucide-react";
+import { TaskItem } from "./TaskItem";
+import { TaskItemSkeleton } from "./TaskItemSkeleton";
 
-import { TaskListProps } from "@/interfaces/task-list-props";
+interface Task {
+  id: number;
+  title: string;
+  description?: string;
+}
 
-import styles from "./TaskList.module.css";
+interface TaskListProps {
+  tasks: Task[];
+  isLoading: boolean;
+}
 
-export default function TaskList({
-  tasks,
-  onDeleteTask,
-  onEditTask,
-}: TaskListProps) {
-  if (tasks.length === 0) return <p>Sua lista de tarefas está vazia.</p>;
+export function TaskList({ tasks, isLoading }: TaskListProps) {
+  if (isLoading) {
+    return (
+      <div className="flex flex-col gap-3">
+        <TaskItemSkeleton />
+        <TaskItemSkeleton />
+        <TaskItemSkeleton />
+      </div>
+    );
+  }
+
+  if (tasks.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-12 border-2 border-dashed rounded-lg">
+        <p className="text-muted-foreground">
+          Você ainda não tem tarefas cadastradas.
+        </p>
+        <p className="text-xs text-muted-foreground/60">
+          Clique em "Nova Tarefa" para começar.
+        </p>
+      </div>
+    );
+  }
 
   return (
-    <div className={styles.tasksContainer}>
+    <div className="flex flex-col gap-3">
       {tasks.map((task) => (
-        <div key={task.id} className={styles.taskItem}>
-          <div className={styles.taskWrapper}>
-            <span>{task.title}</span>
-
-            {task.description && (
-              <p className={styles.description}>{task.description}</p>
-            )}
-          </div>
-
-          <div className={styles.actions}>
-            <button
-              className={styles.buttonIcon}
-              onClick={() => onEditTask(task)}
-            >
-              <Pencil />
-            </button>
-
-            <button
-              className={styles.buttonIcon}
-              onClick={() => onDeleteTask(task)}
-            >
-              <Trash />
-            </button>
-          </div>
-        </div>
+        <TaskItem
+          key={task.id}
+          title={task.title}
+          description={task.description}
+        />
       ))}
     </div>
   );

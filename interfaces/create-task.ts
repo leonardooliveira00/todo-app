@@ -1,5 +1,5 @@
 export interface CreateTaskDTO {
   title: string;
-  description: string;
+  description?: string;
   completed: boolean;
 }

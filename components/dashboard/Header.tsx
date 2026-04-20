@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 
 import { getMe } from "@/services/auth-service";
 
-import styles from "./DashboardHeader.module.css";
+import { LogOut } from "lucide-react";
+import { Button } from "../ui/button";
 
-export default function DashboardHeader() {
+export default function Header() {
   const [user, setUser] = useState<any>();
 
   useEffect(() => {
@@ -21,10 +22,12 @@ export default function DashboardHeader() {
     loadUser();
   }, []);
   return (
-    <header className={styles.header}>
-      <h2 className={styles.logo}>TaskForce</h2>
+    <header className="sticky flex justify-between p-6 bg-gray-900 text-white">
+      <h2>TaskForce</h2>
       {user && <p>Olá, {user.name}.</p>}
-      <button className={styles.logout}>Sair</button>
+      <Button className="bg-transparent">
+        <LogOut /> Sair
+      </Button>
     </header>
   );
 }

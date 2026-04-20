@@ -2,53 +2,68 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Controller, useForm } from "react-hook-form";
 
 // services
 import { login } from "@/services/auth-service";
 
 // components
-import Input from "../ui/Input";
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+  FieldLegend,
+  FieldSeparator,
+  FieldSet,
+  FieldTitle,
+} from "@/components/ui/field";
+
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+  InputGroupText,
+  InputGroupTextarea,
+} from "@/components/ui/input-group";
+
+import { Button } from "@/components/ui/button";
 
 // Validations
 import z from "zod";
-import { loginSchema } from "@/libs/validations/auth";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema } from "@/lib/validations/auth";
 
 // icons
 import { Mail, Lock } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 export default function LoginForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
   const [error, setError] = useState<string | null>("");
 
   const router = useRouter();
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setFieldErrors({});
-    setError(null);
-
+  async function onSubmit(data: z.infer<typeof loginSchema>) {
     if (isLoading) return;
     setIsLoading(true);
 
     try {
-      const validation = loginSchema.safeParse({ email, password });
-
-      if (!validation.success) {
-        const flattenedErrors = z.flattenError(validation.error);
-        setFieldErrors(flattenedErrors.fieldErrors);
-        setIsLoading(false);
-        console.log("Erro da validação na camada frontend: ", validation.error);
-        return;
-      }
-
-      const res = await login(email, password);
+      const res = await login(data.email, data.password);
 
       if (res.error) {
-        console.log(res.error);
+        form.setError("root", { message: res.error });
         setIsLoading(false);
         return;
       }
@@ -66,45 +81,51 @@ export default function LoginForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-8" noValidate>
-      <div>
-        <h1>Acesse sua conta</h1>
-      </div>
-
-      <div className="flex flex-col gap-1">
-        <Input
-          icon={<Mail />}
-          type="email"
-          id="email"
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-            if (fieldErrors.email) {
-              setFieldErrors((prev) => {
-                const newErrors = { ...prev };
-                delete newErrors.email;
-                return newErrors;
-              });
-            }
-          }}
-          label="Email"
+    <form id="login-form" onSubmit={form.handleSubmit(onSubmit)} noValidate>
+      <FieldGroup>
+        <Controller
+          name="email"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="email">Email</FieldLabel>
+              <Input
+                {...field}
+                id="email"
+                type="email"
+                required
+                aria-invalid={fieldState.invalid}
+                placeholder="example@email.com"
+                autoComplete="off"
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
         />
-        {fieldErrors.email && <span>{fieldErrors.email[0]}</span>}
-      </div>
 
-      <div className="flex flex-col gap-1">
-        <Input
-          icon={<Lock />}
-          type="password"
-          id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          label="Senha"
+        <Controller
+          name="password"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="password">Senha</FieldLabel>
+              <Input
+                {...field}
+                id="password"
+                type="password"
+                required
+                aria-invalid={fieldState.invalid}
+                placeholder="Digite sua senha..."
+                autoComplete="off"
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
         />
-        {fieldErrors.password && <span>{fieldErrors.password}</span>}
-      </div>
-
-      <button disabled={isLoading}>Entrar</button>
+        <Button type="submit" className="w-full">
+          Entrar
+        </Button>
+      </FieldGroup>
     </form>
   );
 }

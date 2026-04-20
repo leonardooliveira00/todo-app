@@ -1,52 +1,19 @@
-"use client";
+import * as React from "react"
 
-type Props = {
-  icon: React.ReactNode;
-  type: string;
-  id: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  label: string;
-};
+import { cn } from "@/lib/utils"
 
-import { CheckCircle, XCircle } from "lucide-react";
-
-export default function Input({
-  icon,
-  type,
-  id,
-  value,
-  onChange,
-  label,
-}: Props) {
+function Input({ className, type, ...props }: React.ComponentProps<"input">) {
   return (
-    <div className="flex flex-col w-full gap-1">
-      <div
-        className={
-          "group flex relative items-center border-b-2 border-slate-300 bg-transparent focus-within:border-blue-600"
-        }
-      >
-        <span className="group-focus-within:text-blue-600 pointer-events-none absolute left-3 text-slate-400 transition-colors">
-          {icon}
-        </span>
-
-        <input
-          className="peer w-full placeholder-transparent bg-transparent outline-0 border-none pl-10 pt-1.5 pb-1.5"
-          type={type}
-          id={id}
-          value={value}
-          onChange={onChange}
-          placeholder=" "
-          required
-        />
-
-        <label
-          htmlFor={id}
-          className="pointer-events-none absolute transition-all left-10 top-1/2  text-slate-500 peer-placeholder-shown:text-base -translate-y-1/2 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-600"
-        >
-          {label}
-        </label>
-      </div>
-    </div>
-  );
+    <input
+      type={type}
+      data-slot="input"
+      className={cn(
+        "h-8 w-full min-w-0 rounded-lg border border-input bg-transparent px-2.5 py-1 text-base transition-colors outline-none file:inline-flex file:h-6 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 md:text-sm dark:bg-input/30 dark:disabled:bg-input/80 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40",
+        className
+      )}
+      {...props}
+    />
+  )
 }
+
+export { Input }
