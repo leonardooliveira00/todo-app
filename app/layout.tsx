@@ -16,7 +16,7 @@ export default function RootLayout({
     <html lang="pt-BR" className={cn("font-sans", geist.variable)}>
       <body>
         {children}
-        <Toaster />
+        <Toaster richColors />
         <Footer />
       </body>
     </html>

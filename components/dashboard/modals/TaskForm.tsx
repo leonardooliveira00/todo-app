@@ -42,19 +42,7 @@ export function TaskForm({ initialData, onSubmit }: TaskFormProps) {
   }, [initialData, form]);
 
   return (
-    <form
-      id="task-form"
-      onSubmit={form.handleSubmit(
-        (data) => {
-          console.log("DADOS VÁLIDOS:", data);
-          onSubmit(data);
-        },
-        (errors) => {
-          console.log("ZOD BARROU O ENVIO! ERROS:", errors);
-        },
-      )}
-      noValidate
-    >
+    <form id="task-form" onSubmit={form.handleSubmit(onSubmit)} noValidate>
       <FieldGroup>
         <Controller
           name="title"

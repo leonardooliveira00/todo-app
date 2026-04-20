@@ -1,18 +1,22 @@
 import { TaskItem } from "./TaskItem";
 import { TaskItemSkeleton } from "./TaskItemSkeleton";
-
-interface Task {
-  id: number;
-  title: string;
-  description?: string;
-}
+import { Task } from "@/interfaces/task";
 
 interface TaskListProps {
   tasks: Task[];
+  onEdit: (task: Task) => void;
+  onDelete: (task: Task) => void;
+  onToggle: (task: Task) => void;
   isLoading: boolean;
 }
 
-export function TaskList({ tasks, isLoading }: TaskListProps) {
+export function TaskList({
+  tasks,
+  onEdit,
+  onDelete,
+  onToggle,
+  isLoading,
+}: TaskListProps) {
   if (isLoading) {
     return (
       <div className="flex flex-col gap-3">
@@ -41,8 +45,10 @@ export function TaskList({ tasks, isLoading }: TaskListProps) {
       {tasks.map((task) => (
         <TaskItem
           key={task.id}
-          title={task.title}
-          description={task.description}
+          task={task}
+          onEdit={() => onEdit(task)}
+          onDelete={() => onDelete(task)}
+          onToggle={() => onToggle(task)}
         />
       ))}
     </div>
