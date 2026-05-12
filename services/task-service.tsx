@@ -1,22 +1,21 @@
+import { API_URL } from "@/config";
 import { CreateTaskDTO } from "@/interfaces/create-task";
 import { EditTaskDto } from "@/interfaces/edit-task";
+import { revalidatePath } from "next/cache";
 
 export async function getTasks() {
-  const res = await fetch("http://localhost:3333/tasks", {
+  const res = await fetch(`${API_URL}/tasks`, {
     credentials: "include",
   });
+  revalidatePath;
 
-  const data = await res.json();
+  if (!res.ok) return { error: "Erro ao buscar tarefas." };
 
-  if (!res.ok) return { error: "Erro ao editar tarefa." };
-
-  console.log(data);
-
-  return data;
+  return await res.json();
 }
 
 export async function createTask(task: CreateTaskDTO) {
-  const res = await fetch("http://localhost:3333/tasks", {
+  const res = await fetch(`${API_URL}/tasks`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -31,13 +30,11 @@ export async function createTask(task: CreateTaskDTO) {
     return { error: data };
   }
 
-  console.log(data);
-
   return data;
 }
 
 export async function editTask({ id, ...data }: EditTaskDto) {
-  const res = await fetch(`http://localhost:3333/tasks/${id}`, {
+  const res = await fetch(`${API_URL}/tasks/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -52,10 +49,10 @@ export async function editTask({ id, ...data }: EditTaskDto) {
 }
 
 export async function deleteTask(id: number) {
-  const res = await fetch(`http://localhost:3333/tasks/${id}`, {
+  const res = await fetch(`${API_URL}/tasks/${id}`, {
     method: "DELETE",
     credentials: "include",
   });
 
-  if (!res.ok) return { error: "Erro ao editar tarefa." };
+  if (!res.ok) return { error: "Erro ao deletar tarefa." };
 }
