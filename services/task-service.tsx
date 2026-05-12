@@ -1,13 +1,11 @@
 import { API_URL } from "@/config";
 import { CreateTaskDTO } from "@/interfaces/create-task";
 import { EditTaskDto } from "@/interfaces/edit-task";
-import { revalidatePath } from "next/cache";
 
 export async function getTasks() {
   const res = await fetch(`${API_URL}/tasks`, {
     credentials: "include",
   });
-  revalidatePath;
 
   if (!res.ok) return { error: "Erro ao buscar tarefas." };
 
