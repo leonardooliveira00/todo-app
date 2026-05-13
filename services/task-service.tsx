@@ -13,22 +13,29 @@ export async function getTasks() {
 }
 
 export async function createTask(task: CreateTaskDTO) {
-  const res = await fetch(`${API_URL}/tasks`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify(task),
-  });
+  try {
+    const res = await fetch(`${API_URL}/tasks`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(task),
+    });
 
-  const data = await res.json();
+    const data = await res.json();
 
-  if (!res.ok) {
-    return { error: data };
+    if (!res.ok) {
+      throw new Error(data.message || "Erro ao processar requisição.");
+    }
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error("Erro no Service:", error.message);
+      return { error: true, message: error.message };
+    }
   }
-
-  return data;
 }
 
 export async function editTask({ id, ...data }: EditTaskDto) {

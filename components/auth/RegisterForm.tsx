@@ -16,29 +16,14 @@ import { registerSchema } from "@/lib/validations/register";
 // components
 import {
   Field,
-  FieldContent,
-  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
-  FieldLegend,
-  FieldSeparator,
-  FieldSet,
-  FieldTitle,
 } from "@/components/ui/field";
 
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupButton,
-  InputGroupInput,
-  InputGroupText,
-  InputGroupTextarea,
-} from "@/components/ui/input-group";
-
 import { Button } from "@/components/ui/button";
-// icons
-import { User, Mail, Lock } from "lucide-react";
+
+// import { User, Mail, Lock } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 
